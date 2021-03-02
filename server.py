@@ -1,5 +1,5 @@
 from data import sample_posts
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)
@@ -10,9 +10,17 @@ def index():
     return render_template("index.html", all_posts=sample_posts)
 
 
-@app.route('/contact')
+@app.route('/contact', methods=['POST', 'GET'])
 def contact():
-    return render_template("contact.html")
+    if request.method == 'POST':
+        data = request.form
+        print(data["name"])
+        print(data["email"])
+        print(data["phone"])
+        print(data["message"])
+        return render_template('contact.html', message='Successfully sent your message')
+
+    return render_template("contact.html", message='Contact Me')
 
 
 @app.route('/about')
